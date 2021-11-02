@@ -13,11 +13,13 @@ class MyDataset(Dataset):
     def __getitem__(self, idx):
         d = self.df.iloc[idx]
         image = Image.open(self.img_dir / d.image).convert("RGB")
+        image_2 = Image.open(self.img_dir / d.image).convert("RGB")
         label = torch.tensor(d[1:].tolist(), dtype=torch.float32)
 
         if self.transforms is not None:
             image = self.transforms(image)
-        return image, label
+            image_2 = self.transforms(image_2)
+        return image, image_2, label
 
     def __len__(self):
         return len(self.df)
