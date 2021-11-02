@@ -3,24 +3,24 @@ import torch.nn as nn
 
 
 class Volume(nn.Module):
-    def __init__(self):
+    def __init__(self, num_classes=10):
         super(Volume, self).__init__()
         self.conv = nn.Sequential(
-            nn.Conv2d(1, 64, 10),  # 64@96*96
+            nn.Conv2d(1, 16, 10),  # 64@96*96
             nn.ReLU(inplace=True),
             nn.MaxPool2d(2),  # 64@48*48
-            nn.Conv2d(64, 128, 7),
+            nn.Conv2d(16, 32, 7),
             nn.ReLU(),  # 128@42*42
             nn.MaxPool2d(2),  # 128@21*21
-            nn.Conv2d(128, 128, 4),
+            nn.Conv2d(32, 32, 4),
             nn.ReLU(),  # 128@18*18
             nn.MaxPool2d(2),  # 128@9*9
-            nn.Conv2d(128, 256, 4),
+            nn.Conv2d(32, 64, 4),
             nn.ReLU(),  # 256@6*6
         )
-        self.liner = nn.Sequential(nn.Linear(9216, 4096), nn.Sigmoid())
+        self.liner = nn.Sequential(nn.Linear(25600, 4096), nn.Sigmoid())
         self.out = nn.Linear(4096, 1)
-        self.head = self.create_head(8192, 10)
+        self.head = self.create_head(8192, num_classes)
         self.sigmoid = nn.Sigmoid()
 
     def forward_one(self, x):
@@ -42,10 +42,8 @@ class Volume(nn.Module):
         self, num_features, number_classes, dropout_prob=0.5, activation_func=nn.ReLU
     ):
         features_lst = [num_features, num_features // 2, num_features // 4]
-        print(features_lst)
         layers = []
         for in_f, out_f in zip(features_lst[:-1], features_lst[1:]):
-            print(in_f, out_f)
             layers.append(nn.Linear(in_f, out_f))
             layers.append(activation_func())
             layers.append(nn.BatchNorm1d(out_f))
