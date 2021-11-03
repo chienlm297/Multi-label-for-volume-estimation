@@ -8,6 +8,7 @@ from siamese import Siamese
 
 model = Volume()
 model.eval()
-input_data = torch.randn(1, 1, 105, 105)
+input_data = torch.randn(1, 3, 224, 224)
 out = model.forward(input_data, input_data)
 print(out)
+summary(model, [(3, 224, 224), (3, 224, 224)])
