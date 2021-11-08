@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from .resnet import BasicBlock, Bottleneck
+from resnet import BasicBlock, Bottleneck
 
 
 class Volume(nn.Module):
@@ -73,5 +73,5 @@ class Volume(nn.Module):
         out2 = self.forward_one(x2)
         out3 = torch.cat((out1, out2), dim=1)
         out = self.head(out3)
-        return self.sigmoid(out)
+        # return self.sigmoid(out)
         return out
