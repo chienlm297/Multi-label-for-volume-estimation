@@ -23,7 +23,6 @@ def train(model, data_loader, criterion, optimizer, scheduler, num_epochs=5):
             for data, data2, target in data_loader[phase]:
                 # load the data and target to respective device
                 data, data2, target = data.to(device), data2.to(device), target.to(device)
-
                 with torch.set_grad_enabled(phase == "train"):
                     # feed the input
                     output = model.forward(data, data2)

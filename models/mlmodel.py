@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from resnet import BasicBlock, Bottleneck
+from .resnet import BasicBlock, Bottleneck
 
 
 class Volume(nn.Module):
@@ -12,7 +12,7 @@ class Volume(nn.Module):
         self.backbone = self.make_resnet_backbone(self.block, self.layers)
         self.liner = nn.Sequential(nn.Linear(1024, 4096), nn.Sigmoid())
         self.head = self.create_head(1024, num_classes)
-        self.sigmoid = nn.Sigmoid()
+        # self.sigmoid = nn.Sigmoid()
 
     def make_resnet_backbone(self, block, layers):
         return nn.Sequential(
